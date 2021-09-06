@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "671429672916",
+    "project_id": "my-app-321420",
+    "storage_bucket": "my-app-321420.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:671429672916:android:2a55833af3e0a79ecbe041",
+        "android_client_info": {
+          "package_name": "com.kynesun.my_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "671429672916-0a0gu386t9e4oto5go3t3th81rukt27b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqDzgBHVTSbvmYyTDgt3CZUOhvXXxms9U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "671429672916-0a0gu386t9e4oto5go3t3th81rukt27b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
