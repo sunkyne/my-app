@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_app/providers/product.dart';
 import 'package:my_app/screens/search_screen.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -25,6 +26,8 @@ class _IngredientListState extends State<IngredientList> {
       return;
     }
     form.currentState!.save();
+    //Add product and ingredients to database
+    Product(widget.listOfIngr, name: widget.prodTitle).addProdToIngr();
     Navigator.of(context).pop();
   }
 
@@ -56,7 +59,7 @@ class _IngredientListState extends State<IngredientList> {
             },
             onSaved: (value) {
               widget.prodTitle = value!;
-              print(widget.prodTitle);
+              // print(widget.prodTitle);
             },
           ),
         ),

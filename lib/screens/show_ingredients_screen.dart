@@ -8,7 +8,7 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class ShowIngredients extends StatelessWidget {
   final String imagePath;
-  List<String> listOfIngr = ['ur mom', 'ur mom', 'ur mom', 'ur mom', 'ur mom', 'ur mom', 'ur mom', 'ur mom'];
+  List<String> listOfIngr = ['1', '9', '3', '14', '50', '6', '17'];
   final panelController = PanelController();
 
   ShowIngredients(

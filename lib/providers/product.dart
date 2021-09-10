@@ -20,7 +20,14 @@ class Product extends ChangeNotifier {
     return [..._ingr];
   }
 
-  void addIngredient(String ingr) {
+  Future<void> addProdToIngr() async {
+    var collectionRef = firestore.collection('ingredients');
+    _ingr.forEach((element) async {
+      collectionRef.doc(element).collection('prod_list').add({'id':name});
+    });
+  }
+
+  void addIngrToProd(String ingr) {
     _ingr.add(ingr);
     prod.add({'id':ingr});
   }
