@@ -162,7 +162,7 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
                   pageBuilder: (context, animation1, animation2) =>
                       ShowIngredients(
                     widget.imagePath,
-                    // widget.listOfIngr,
+                    widget.listOfIngr,
                   ),
                   transitionDuration: Duration(seconds: 0),
                 ),

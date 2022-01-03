@@ -41,26 +41,29 @@ class _IngredientListState extends State<IngredientList> {
         ),
         buildDragHandle(),
         SizedBox(
-          height: 20,
+          height: 10,
         ),
-        Form(
-          key: form,
-          child: TextFormField(
-            controller: textController,
-            decoration: InputDecoration(
-              labelText: "Product Name",
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 10),
+          child: Form(
+            key: form,
+            child: TextFormField(
+              controller: textController,
+              decoration: InputDecoration(
+                labelText: "Product Name",
+              ),
+              validator: (value) {
+                if (value!.isEmpty) {
+                  return 'Please provide a product name.';
+                } else {
+                  return null;
+                }
+              },
+              onSaved: (value) {
+                widget.prodTitle = value!;
+                // print(widget.prodTitle);
+              },
             ),
-            validator: (value) {
-              if (value!.isEmpty) {
-                return 'Please provide a product name.';
-              } else {
-                return null;
-              }
-            },
-            onSaved: (value) {
-              widget.prodTitle = value!;
-              // print(widget.prodTitle);
-            },
           ),
         ),
         SizedBox(
