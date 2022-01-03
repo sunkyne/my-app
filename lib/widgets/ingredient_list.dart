@@ -19,6 +19,7 @@ class IngredientList extends StatefulWidget {
 class _IngredientListState extends State<IngredientList> {
   final form = GlobalKey<FormState>();
   TextEditingController textController = TextEditingController();
+  TextEditingController ingrController = TextEditingController();
 
   void submitProduct() {
     final isValid = form.currentState!.validate();
@@ -110,20 +111,28 @@ class _IngredientListState extends State<IngredientList> {
       ? widget.panelController.close()
       : widget.panelController.open();
 
-  Widget buildIngrCard(int i) => Card(
-        child: ListTile(
-          title: Text(
-            widget.listOfIngr[i],
-          ),
-          trailing: IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () {
-              Navigator.of(context).pushNamed(
-                SearchScreen.routeName,
-                arguments: widget.listOfIngr[i],
-              );
-            },
-          ),
+  Widget buildIngrCard(int i) {
+    ingrController = TextEditingController(text: widget.listOfIngr[i]);
+    return Card(
+      child: ListTile(
+        title: TextField(
+          controller: ingrController,
+          decoration: null,
+          autocorrect: true,
+          onSubmitted: (value) {
+            widget.listOfIngr[i] = value;
+          },
         ),
-      );
+        trailing: IconButton(
+          icon: Icon(Icons.search),
+          onPressed: () {
+            Navigator.of(context).pushNamed(
+              SearchScreen.routeName,
+              arguments: widget.listOfIngr[i],
+            );
+          },
+        ),
+      ),
+    );
+  }
 }
