@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:my_app/providers/product.dart';
 import 'package:my_app/screens/search_screen.dart';
@@ -28,8 +29,15 @@ class _IngredientListState extends State<IngredientList> {
     }
     form.currentState!.save();
     //Add product and ingredients to database
+    widget.listOfIngr.removeWhere((element) => element.isEmpty);
     Product(widget.listOfIngr, name: widget.prodTitle).addProdToIngr();
     Navigator.of(context).pop();
+  }
+
+  void addIngr() {
+    setState(() {
+      widget.listOfIngr.add("");
+    });
   }
 
   @override
@@ -78,8 +86,28 @@ class _IngredientListState extends State<IngredientList> {
               : ListView.builder(
                   padding: EdgeInsets.all(0),
                   controller: widget.scrollController,
-                  itemBuilder: (ctx, i) => buildIngrCard(i),
-                  itemCount: widget.listOfIngr.length,
+                  itemCount: widget.listOfIngr.length + 1,
+                  itemBuilder: (ctx, i) {
+                    if (i == widget.listOfIngr.length)
+                      return Card(
+                        child: TextButton(
+                          onPressed: addIngr,
+                          style: TextButton.styleFrom(primary: Colors.grey),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.add),
+                              Text(
+                                "Add ingredient",
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    else
+                      return buildIngrCard(i);
+                  },
                 ),
         ),
         SizedBox(
@@ -119,20 +147,69 @@ class _IngredientListState extends State<IngredientList> {
           controller: ingrController,
           decoration: null,
           autocorrect: true,
+          autofocus: widget.listOfIngr[i].isEmpty ? true : false,
           onSubmitted: (value) {
             widget.listOfIngr[i] = value;
           },
         ),
-        trailing: IconButton(
-          icon: Icon(Icons.search),
-          onPressed: () {
-            Navigator.of(context).pushNamed(
-              SearchScreen.routeName,
-              arguments: widget.listOfIngr[i],
-            );
-          },
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              icon: Icon(Icons.search),
+              onPressed: () {
+                Navigator.of(context).pushNamed(
+                  SearchScreen.routeName,
+                  arguments: widget.listOfIngr[i],
+                );
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () {
+                showConfirmDeletion(context, i);
+              },
+            ),
+          ],
         ),
       ),
+    );
+  }
+
+  showConfirmDeletion(BuildContext context, int i) {
+    // set up the buttons
+    Widget cancelButton = TextButton(
+      child: Text("Cancel"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget continueButton = TextButton(
+      child: Text("Delete"),
+      onPressed: () {
+        setState(() {
+          widget.listOfIngr.remove(widget.listOfIngr[i]);
+        });
+        Navigator.of(context).pop();
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20))),
+      title: Text("Confirm"),
+      content: Text("Are you sure you want to delete this ingredient?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
     );
   }
 }

@@ -52,9 +52,10 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
     // print(widget.processedText);
     // Converts text block into a list
     widget.listOfIngr = widget.processedText.split(",");
-    for (String i in widget.listOfIngr) {
-      i.trim();
-    }
+    // for (String i in widget.listOfIngr) {
+    //   i.trim();
+    // }
+    widget.listOfIngr.forEach((element) => element.trim());
     if (this.mounted) {
       setState(() {});
     }
