@@ -12,7 +12,7 @@ class DisplayPictureScreen extends StatefulWidget {
   String processedText = "";
   List<String> listOfIngr = [];
   List<TextBlock> elements = [];
-  Size imageSize = Size(0, 0);
+  Size imageSize = Size(0,0);
   final scale;
 
   DisplayPictureScreen({Key? key, required this.imagePath, required this.scale})
@@ -52,9 +52,6 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
     // print(widget.processedText);
     // Converts text block into a list
     widget.listOfIngr = widget.processedText.split(",");
-    // for (String i in widget.listOfIngr) {
-    //   i.trim();
-    // }
     widget.listOfIngr.forEach((element) => element.trim());
     if (this.mounted) {
       setState(() {});
@@ -66,11 +63,7 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
     final Completer<Size> completer = Completer<Size>();
 
     // Fetching image from path
-    final Image image = Image.file(
-      File(imageFile),
-      // width: MediaQuery.of(context).size.width,
-      // height: MediaQuery.of(context).size.height,
-    );
+    final Image image = Image.file(File(imageFile));
 
     // Retrieving its size
     image.image.resolve(const ImageConfiguration()).addListener(
@@ -98,8 +91,6 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // print("Screen size : ${MediaQuery.of(context).size.width}");
-    // print("Image size : ${widget.imageSize.width}");
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -109,42 +100,58 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
       ),
       // The image is stored as a file on the device. Use the `Image.file`
       // constructor with the given path to display the image.
-      body: Stack(
-        children: [
-          CustomPaint( // An attempt to display which block of text is detected
-            foregroundPainter: TextDetectorPainter(
-              widget.imageSize,
-              widget.elements,
-              widget.scale,
-            ),
-            child: Transform.scale(
-              scale: widget.scale,
-              child: Center(
-                child: Image.file(
-                  File(widget.imagePath),
+      body: widget.imageSize != Size(0,0)
+          ? Stack(
+              children: [
+                Center(
+                  child: Container(
+                    width: double.maxFinite,
+                    color: Colors.black,
+                    child: Transform.scale(
+                      scale: widget.scale,
+                      alignment: Alignment.center,
+                      child: CustomPaint(
+                        // Display which block of text is detected
+                        foregroundPainter: TextDetectorPainter(
+                          widget.imageSize,
+                          widget.elements,
+                          widget.scale,
+                        ),
+                        child: AspectRatio(
+                          aspectRatio: widget.imageSize.aspectRatio,
+                          child: Image.file(
+                            File(widget.imagePath),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  // child: Image.file(File(widget.imagePath)),
                 ),
+                // Padding(
+                //   padding: const EdgeInsets.all(20.0),
+                //   child: Container(
+                //     width: 125,
+                //     height: 125,
+                //     alignment: Alignment.bottomCenter,
+                //     child: IconButton(
+                //       onPressed: () {
+                //
+                //       },
+                //       icon: Icon(Icons.check_circle_outlined),
+                //       color: Colors.white,
+                //       iconSize: 50,
+                //     ),
+                //   ),
+                // ),
+              ],
+            )
+          : Container(
+              color: Colors.black,
+              child: Center(
+                child: CircularProgressIndicator(),
               ),
             ),
-            // child: Image.file(File(widget.imagePath)),
-          ),
-          // Padding(
-          //   padding: const EdgeInsets.all(20.0),
-          //   child: Container(
-          //     width: 125,
-          //     height: 125,
-          //     alignment: Alignment.bottomCenter,
-          //     child: IconButton(
-          //       onPressed: () {
-          //
-          //       },
-          //       icon: Icon(Icons.check_circle_outlined),
-          //       color: Colors.white,
-          //       iconSize: 50,
-          //     ),
-          //   ),
-          // ),
-        ],
-      ),
       floatingActionButton: Container(
         width: 125,
         height: 125,
@@ -195,15 +202,14 @@ class TextDetectorPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     // TODO: implement paint
+
     final double scaleX = size.width / absoluteImageSize.width;
     final double scaleY = size.height / absoluteImageSize.height;
-    print("Scale : ${size.aspectRatio * absoluteImageSize.aspectRatio}");
     Rect scaleRect(Rect container) {
-      print(container.left * scaleX);
       return Rect.fromLTRB(
-        container.left * scaleX / scale,
+        container.left * scaleX,
         container.top * scaleY,
-        container.right * scaleX * scale,
+        container.right * scaleX,
         container.bottom * scaleY,
       );
     }

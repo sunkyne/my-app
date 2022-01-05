@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:camera/camera.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:my_app/screens/home_screen.dart';
 import 'package:my_app/screens/search_screen.dart';
 import 'package:my_app/screens/take_picture_screen.dart';
 import 'package:flutter/services.dart';
@@ -25,7 +26,7 @@ Future<void> main() async {
         theme: ThemeData(
           primarySwatch: Colors.green,
         ),
-        home: TakePictureScreen(
+        home: HomeScreen(
           // Pass the appropriate camera to the TakePictureScreen widget.
           camera: firstCamera,
         ),

@@ -15,10 +15,10 @@ class TakePictureScreen extends StatefulWidget {
   final CameraDescription camera;
 
   @override
-  TakePictureScreenState createState() => TakePictureScreenState();
+  _TakePictureScreenState createState() => _TakePictureScreenState();
 }
 
-class TakePictureScreenState extends State<TakePictureScreen> {
+class _TakePictureScreenState extends State<TakePictureScreen> {
   late CameraController _controller;
   late Future<void> _initializeControllerFuture;
 
@@ -64,22 +64,16 @@ class TakePictureScreenState extends State<TakePictureScreen> {
           if (snapshot.connectionState == ConnectionState.done) {
             // If the Future is complete, display the preview.
             // Set camera scale
-            var camera = _controller.value;
-            final size = MediaQuery.of(context).size;
-            scale = size.aspectRatio * camera.aspectRatio;
-            // print("Scale : $scale");
-            if (scale < 1 && scale != 0) {
-              scale = 1 / scale;
-            }
-            // print("Scale : $scale");
-            return Transform.scale(
-              scale: scale,
-              child: Center(
+            final mediaSize = MediaQuery.of(context).size;
+            scale = 1.0 / (_controller.value.aspectRatio * mediaSize.aspectRatio);
+            return ClipRect(
+              clipper: _MediaSizeClipper(mediaSize),
+              child: Transform.scale(
+                scale: scale,
+                alignment: Alignment.topCenter,
                 child: CameraPreview(_controller),
               ),
             );
-
-            // return CameraPreview(_controller);
           } else {
             // Otherwise, display a loading indicator.
             return const Center(child: CircularProgressIndicator());
@@ -133,5 +127,19 @@ class TakePictureScreenState extends State<TakePictureScreen> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
+  }
+}
+
+//Clips the camera preview to exactly match the screen size
+class _MediaSizeClipper extends CustomClipper<Rect> {
+  final Size mediaSize;
+  const _MediaSizeClipper(this.mediaSize);
+  @override
+  Rect getClip(Size size) {
+    return Rect.fromLTWH(0, 0, mediaSize.width, mediaSize.height);
+  }
+  @override
+  bool shouldReclip(CustomClipper<Rect> oldClipper) {
+    return true;
   }
 }
