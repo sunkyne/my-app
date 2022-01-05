@@ -115,7 +115,6 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
                         foregroundPainter: TextDetectorPainter(
                           widget.imageSize,
                           widget.elements,
-                          widget.scale,
                         ),
                         child: AspectRatio(
                           aspectRatio: widget.imageSize.aspectRatio,
@@ -191,12 +190,10 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
 class TextDetectorPainter extends CustomPainter {
   final Size absoluteImageSize;
   final List<TextBlock> elements;
-  final scale;
 
   TextDetectorPainter(
     this.absoluteImageSize,
     this.elements,
-    this.scale,
   );
 
   @override
